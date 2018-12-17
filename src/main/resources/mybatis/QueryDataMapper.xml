@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cnebula.ill.mybatis.MyDataMapper">
+
+    <sql id="Base_Colum_List">
+        id, tenant, regdate, udpdate
+    </sql>
+    <resultMap id="Data" type="com.cnebula.ill.dto.BaseData">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="tenant" jdbcType="VARCHAR" property="tenant" typeHandler="com.cnebula.ill.type.MyTypeHandler"/>
+        <result column="regdate" jdbcType="VARCHAR" property="regdate"/>
+        <result column="udpdate" jdbcType="VARCHAR" property="udpdate"/>
+        <!--<result column="totalRecord" jdbcType="INTEGER" property="totalRecord"/>-->
+    </resultMap>
+    <select id="findDataById" resultMap="Data">
+        SELECT id, tenant, regdate, udpdate FROM public.manage_tenant
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+        </where>
+    </select>
+    
+    <select id="findByPage" resultMap="Data">
+        /*SELECT count(id) OVER() AS totalRecord,*/
+        SELECT count(id) OVER() AS totalRecord,
+        <include refid="Base_Colum_List"/>
+        FROM manage_tenant
+        <where>
+            tenant ->> 'tenant_city' = '北京市'
+        </where>
+    </select>
+
+    <insert id="insertTenant" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO manage_tenant(
+          id, tenant, regdate, udpdate)
+          VALUES
+          <foreach collection="tenants" item="tenant" separator=",">
+              (
+                #{tenant.id, jdbcType=VARCHAR}, #{tenant.tenant, typeHandler=com.cnebula.ill.type.MyTypeHandler}, now(), now()
+              )
+          </foreach>
+    </insert>
+
+    <update id="updateTenant" useGeneratedKeys="true" keyProperty="id" keyColumn="id" flushCache="true">
+        UPDATE manage_tenant SET
+            tenant = jsonb_set(tenant, '{tenant_status}',#{tenant.tenant.tenant_status, javaType=com.fasterxml.jackson.databind.util.JSONPObject, typeHandler=com.cnebula.ill.type.MyTypeHandler})
+            <!-- tenant = jsonb_set #{tenant}::jsonb -->
+        <!--<foreach collection="tenant" item="val" index="key" separator=",">
+            #{tenant} = #{val, typeHandler=com.cnebula.ill.type.MyTypeHandler}
+        </foreach>-->
+        WHERE id = #{id}
+    </update>
+</mapper>

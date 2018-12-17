@@ -1,0 +1,3 @@
+mybatis:
+  type-aliases-package: com.cnebula.ill.dto
+  config-location: classpath:mybatis/mybatis-config.xml
