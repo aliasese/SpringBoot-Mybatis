@@ -18,7 +18,7 @@
         SELECT id, tenant, regdate, udpdate FROM public.manage_tenant
         <where>
             <if test="id != null">
-                AND id = #{id}
+                AND id = #{id, jdbcType=VARCHAR, javaType=java.lang.String}
             </if>
         </where>
     </select>
@@ -51,6 +51,12 @@
         <!--<foreach collection="tenant" item="val" index="key" separator=",">
             #{tenant} = #{val, typeHandler=com.cnebula.ill.type.MyTypeHandler}
         </foreach>-->
-        WHERE id = #{id}
+        WHERE id = 't000010'
+    </update>
+
+    <update id="updateTenantStatus" parameterType="java.lang.String"  useGeneratedKeys="true" keyProperty="id" keyColumn="id" flushCache="true">
+        UPDATE manage_tenant SET
+        tenant = jsonb_set(tenant, '{tenant_status}',#{status, jdbcType=INTEGER, javaType=java.lang.Integer, typeHandler=com.cnebula.ill.type.MyTypeHandler})
+        WHERE id = #{id, javaType=java.lang.String}
     </update>
 </mapper>

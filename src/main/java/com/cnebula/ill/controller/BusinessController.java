@@ -73,4 +73,10 @@ public class BusinessController {
         System.out.println(tenant);
         return queryDataService.updateTenant(tenant);
     }
+
+    @GetMapping("/update/status")
+    @ResponseBody
+    public Integer updateTenantStatus(@RequestParam String id, @RequestParam Integer status){
+        return queryDataService.updateTenantStatus(id, status);
+    }
 }

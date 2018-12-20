@@ -14,4 +14,5 @@ public interface QueryDataService {
     Integer insertTenant(List<Tenant> tenants);
     Integer update(String schema, Integer tenant_status, String id);
     Integer updateTenant(Tenant tenant);
+    Integer updateTenantStatus(String id, Integer status);
 }

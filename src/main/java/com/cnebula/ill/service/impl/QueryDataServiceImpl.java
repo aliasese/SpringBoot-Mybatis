@@ -62,5 +62,10 @@ public class QueryDataServiceImpl implements QueryDataService {
         return myDataMapper.updateTenant(tenant);
     }
 
+    @Override
+    public Integer updateTenantStatus(String id, Integer status) {
+        return myDataMapper.updateTenantStatus(id, status);
+    }
+
 
 }

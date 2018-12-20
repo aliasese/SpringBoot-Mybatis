@@ -15,4 +15,5 @@ public interface MyDataMapper {
     List<Object> findByPage(@Param("currentPage") Integer currentPage, @Param("pageSize") Integer pageSize);
     Integer insertTenant(@Param("tenants") List<Tenant> tenants);
     Integer updateTenant(@Param("tenant") Tenant tenant);
+    Integer updateTenantStatus(@Param("id") String id, @Param("status") Integer status);
 }
