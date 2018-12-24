@@ -1,9 +1,12 @@
 package com.cnebula.ill.controller;
 
+import com.cnebula.ill.exception.ResponseUtil;
+import com.cnebula.ill.exception.SystemErrorException;
 import com.cnebula.ill.pojo.Tenant;
 import com.cnebula.ill.service.QueryDataService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import net.sf.jsqlparser.statement.execute.Execute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +41,17 @@ public class BusinessController {
     }
 
     @GetMapping("/get/my/{id}")
-    public Object getMyData(@PathVariable(value = "id") String id) {
+    public Object getMyData(@RequestHeader(value = "X-Okapi-Tenant", required = true) String tenant, @PathVariable(value = "id") String id) throws Exception {
+        try {
+            Integer i = 1 / 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SystemErrorException();
+        }
         log.info(id);
         Object oneById = queryDataService.getDataById(id);
         System.out.println(oneById);
+        //throw new Exception();
         return oneById;
     }
 
