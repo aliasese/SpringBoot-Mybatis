@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-@Component
+//@Component
 //@EnableScheduling
 public class MyTaskSchedule implements InitializingBean {
     private static final Logger log = LoggerFactory.getLogger(MyTaskSchedule.class);

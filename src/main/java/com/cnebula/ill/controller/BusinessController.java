@@ -1,7 +1,9 @@
 package com.cnebula.ill.controller;
 
+import com.cnebula.ill.annotation.PermissionAnnotation;
 import com.cnebula.ill.exception.ResponseUtil;
 import com.cnebula.ill.exception.SystemErrorException;
+import com.cnebula.ill.pojo.Permission;
 import com.cnebula.ill.pojo.Tenant;
 import com.cnebula.ill.service.QueryDataService;
 import com.github.pagehelper.Page;
@@ -21,6 +23,7 @@ import java.util.List;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping(value = "/query")
+@PermissionAnnotation(belong = Permission.QUERY)
 public class BusinessController {
 
     private static final Logger log = LoggerFactory.getLogger(BusinessController.class);
@@ -33,6 +36,7 @@ public class BusinessController {
     @GetMapping("/get/{id}")
     //@Scheduled(cron = "*/2 * * * * ?")
     //@Scheduled(fixedDelay = 5000)
+    //@PermissionAnnotation(belong = Permission.QUERY)
     public Object getData(@PathVariable(value = "id") String id) {
         log.info(id);
         Object oneById = queryDataService.getOneById(id);

@@ -2,10 +2,7 @@ package com.cnebula.ill.aop;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -31,7 +28,8 @@ public class LogAspect {
     @Pointcut(value = "execution(public * com.cnebula.ill.controller..*.*(..))")
     void log() {}
 
-    @Before(value = "log()")
+    //@Before(value = "log()")
+    @Before(value = "execution(public * com.cnebula.ill.controller..*.*(..))")
     public void doLogBefore(JoinPoint joinPoint) {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
@@ -61,5 +59,11 @@ public class LogAspect {
     @AfterReturning(returning = "ret", pointcut = "log()")
     public void doAfter(Object ret) throws Exception {
         LOGGER.info(MAPPER.writeValueAsString(ret));
+    }
+
+    @AfterThrowing(value="execution (public * com.cnebula.ill.controller..*.*(..))",throwing="e")
+    public void afterReturningMethod(JoinPoint joinPoint,Exception e){
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println("The method name:"+methodName+ " ends and result="+e);
     }
 }

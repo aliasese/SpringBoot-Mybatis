@@ -17,7 +17,7 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 @Lazy(false)
-@Component
+//@Component
 //@EnableScheduling
 public class DynamicScheduledTask implements SchedulingConfigurer {
 
